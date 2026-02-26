@@ -13,3 +13,8 @@ SigninLogs
 |summarize UsersTargeted = dcount(UserPrincipalName) by IPAddress, bin(TimeGenerate, 5m)
 |where UserTargered > 5
 |sort by UserTargeted desc
+
+## impossible Travel Detection
+SigninLogs
+|summarize Location = make_set(Location) by UserPrincipalName, bin(TimeGenerated, 1h)
+!where array_length(Location) > 1
