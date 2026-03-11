@@ -24,3 +24,16 @@ SigninLogs
 SigninLogs
 |summarize Location = make_set(Location) by UserPrincipalName, bin(TimeGenerated, 1h)
 !where array_length(Location) > 1
+
+## Failed Logins Followed by Success
+let FailedLogins = SigninLogs
+| where ResultType != 0
+| summarize FailedAttempts = count() by IPAddress, UserPrincipalName, bin(TimeGenerated, 10m)
+| where FailedAttempts >= 5;
+
+let SuccessfulLogins = SigninLogs
+| where ResultType == 0
+| summarize SuccessCount = count() by IPAddress, UserPrincipalName, bin(TimeGenerated, 10m);
+
+FailedLogins
+| join kind=inner SuccessfulLogins on IPAddress, UserPrincipalName, TimeGenerated
