@@ -22,8 +22,16 @@ SigninLogs
 
 ## impossible Travel Detection
 SigninLogs
-|summarize Location = make_set(Location) by UserPrincipalName, bin(TimeGenerated, 1h)
-!where array_length(Location) > 1
+| where ResultType == 0
+| project UserPrincipalName, IPAddress, Location, TimeGenerated
+| order by UserPrincipalName, TimeGenerated asc
+| serialize
+| extend PreviousLocation = prev(Location), PreviousTime = prev(TimeGenerated), PreviousUser = prev(UserPrincipalName)
+| where UserPrincipalName == PreviousUser
+| where Location != PreviousLocation
+| extend TimeDifference = TimeGenerated - PreviousTime
+| where TimeDifference < 1h
+| project UserPrincipalName, PreviousLocation, Location, PreviousTime, TimeGenerated, TimeDifference
 
 ## Failed Logins Followed by Success
 let FailedLogins = SigninLogs
