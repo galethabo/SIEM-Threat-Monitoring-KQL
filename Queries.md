@@ -45,3 +45,14 @@ let SuccessfulLogins = SigninLogs
 
 FailedLogins
 | join kind=inner SuccessfulLogins on IPAddress, UserPrincipalName, TimeGenerated
+
+==============================
+// Day 11 – Suspicious PowerShell Detection
+// ==============================
+
+SecurityEvent
+| where EventID == 4688
+| where Process has "powershell"
+| where CommandLine has_any ("EncodedCommand","Invoke-WebRequest","DownloadString","IEX")
+| project TimeGenerated, Computer, Account, CommandLine
+| sort by TimeGenerated desc
