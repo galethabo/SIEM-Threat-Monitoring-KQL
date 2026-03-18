@@ -34,17 +34,20 @@ SigninLogs
 | project UserPrincipalName, PreviousLocation, Location, PreviousTime, TimeGenerated, TimeDifference
 
 ## Failed Logins Followed by Success
-let FailedLogins = SigninLogs
+SigninLogs
+| where TimeGenerated > ago(1d)
 | where ResultType != 0
-| summarize FailedAttempts = count() by IPAddress, UserPrincipalName, bin(TimeGenerated, 10m)
-| where FailedAttempts >= 5;
+| summarize FailedAttempts = count() by UserPrincipalName, IPAddress, bin(TimeGenerated, 5m)
+| where FailedAttempts >= 5
+| join (
+    SigninLogs
+    | where ResultType == 0
+    | project UserPrincipalName, IPAddress, SuccessTime = TimeGenerated
+) on UserPrincipalName
+| project UserPrincipalName, IPAddress, FailedAttempts, SuccessTime
+| order by FailedAttempts desc
 
-let SuccessfulLogins = SigninLogs
-| where ResultType == 0
-| summarize SuccessCount = count() by IPAddress, UserPrincipalName, bin(TimeGenerated, 10m);
-
-FailedLogins
-| join kind=inner SuccessfulLogins on IPAddress, UserPrincipalName, TimeGenerated
+//SOC analysts use this detection to identify possible account takeovers and investigate suspicious login behavior.
 
 
 ## Day 11 – Suspicious PowerShell Detection
