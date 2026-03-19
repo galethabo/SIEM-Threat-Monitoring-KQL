@@ -1,4 +1,4 @@
-##findings 1
+##findings 1 Brute Force Attempt
 Detected multiple failed login attempts targeting specific user accounts within a short time frame.
 
 Evidence:
@@ -14,7 +14,7 @@ Recommendation:
 -Enable account lockout mechanisms
 
 
-##findings 2
+## findings 2 Failed Logins Followed by Successful Login
 
 Description:
 A user experienced multiple failed login attempts followed by a successful login.
@@ -33,7 +33,7 @@ Recommendation:
 -Enable multi-factor authentication (MFA)
 
 
-##Findings 3
+## Findings 3 Suspicious High Activity After Login
 
 Description:
 Detected unusually high activity from a user account shortly after a successful login.
@@ -48,3 +48,17 @@ Recommendation:
 -Investigate user activity
 -Check accessed resources
 -Temporarily disable account if suspicious
+
+
+## findings 4 Suspicious Login Timeline
+Description:
+A sequence of failed logins followed by a successful login and subsequent activity was observed.
+
+Risk:
+-Indicates possible account compromise and attacker activity.
+
+Recommendation:
+-Investigate full user activity
+-Reset credentials
+-Enable MFA
+-Monitor for further suspicious behavior
