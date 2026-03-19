@@ -49,6 +49,12 @@ SigninLogs
 
 //SOC analysts use this detection to identify possible account takeovers and investigate suspicious login behavior.
 
+## User Activity Timeline
+SigninLogs
+|where UserPrincipalName == "galethabo@gmail.com"
+|where TimeGenerated > ago(1d)
+|project TimeGenerated, UserPrincipalName, IPAddress, Location, ResultType
+|order TimeGenerated asc
 
 ## Suspicious PowerShell Detection
 |where EventID == 4668
