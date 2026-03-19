@@ -1,4 +1,4 @@
-##findings 1 Brute Force Attempt
+## findings 1 Brute Force Attempt
 Detected multiple failed login attempts targeting specific user accounts within a short time frame.
 
 Evidence:
