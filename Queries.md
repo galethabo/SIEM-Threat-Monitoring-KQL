@@ -56,6 +56,7 @@ SigninLogs
 |project TimeGenerated, UserPrincipalName, IPAddress, Location, ResultType
 |order TimeGenerated asc
 
+//Creates a chronological timeline of login activity for a specific user to support incident investigation and identify suspicious patterns.
 ## Suspicious PowerShell Detection
 |where EventID == 4668
 |where process has "powershell"
