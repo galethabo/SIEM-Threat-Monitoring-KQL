@@ -50,7 +50,7 @@ SigninLogs
 //SOC analysts use this detection to identify possible account takeovers and investigate suspicious login behavior.
 
 
-## Day 11 – Suspicious PowerShell Detection
+## Suspicious PowerShell Detection
 |where EventID == 4668
 |where process has "powershell"
 |where CommandLine has_any ("EncodedCommand", "Invoke-WebRequest", "DownloadString", "IEX")
