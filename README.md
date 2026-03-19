@@ -18,5 +18,11 @@ This project demonstrates my ability to detect and investigate common cyber thre
 - Azure AD Sign-in Logs
 - KQL (Kusto Query Language)
 
+## Key Outcomes
+- Detected brute force and password spray attacks using KQL
+- Identified suspicious login patterns and attacker IP addresses
+- Built investigation timelines for compromised accounts
+- Simulated real SOC analyst detection and response workflows
+
 ## Author
 Lethabo Galane
