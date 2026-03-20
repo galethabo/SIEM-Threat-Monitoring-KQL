@@ -57,9 +57,26 @@ SigninLogs
 |order TimeGenerated asc
 
 //Creates a chronological timeline of login activity for a specific user to support incident investigation and identify suspicious patterns.
+
 ## Suspicious PowerShell Detection
 |where EventID == 4668
 |where process has "powershell"
 |where CommandLine has_any ("EncodedCommand", "Invoke-WebRequest", "DownloadString", "IEX")
 |project TimeGenerated, Computer, Account, CommandLine
 |sort by TimeGenerated desc
+
+
+## Basic Alert Triage by Severity
+SigninLogs
+|where TimeGenerated > ago(1d)
+|summarize
+        FailedAttempts = countif(ResultType !=0),
+        SuccessfulLogins = countif(ResultType == 0)
+        by UserPrincipalName, IPAddress
+|extend Severity = case(
+        FailedAttempts >= 10 ans SuccessfulLogin > 0, "High",
+        SuccessfulLogins > 0 and FailedAttempts == 0, "Low",
+        "Informational"
+)
+|order by FailedAttempts desc
+//Classifies authentication activity into severity levels based on failed and successful login patterns to support alert triage.
